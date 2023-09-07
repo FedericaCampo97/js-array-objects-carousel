@@ -21,6 +21,7 @@ const photo = [
    },
 ]
 
+//Inizializzo activeSlide a 0
 let activeSlide = 0;
 
 // Seleziono gli elementi html
@@ -38,11 +39,11 @@ photo.forEach((element,key) => {
     sliderImagesEl.insertAdjacentHTML('beforeend', slideMarkup)
 })
 
+//Seleziono immagini create
 const slidesImages = document.querySelectorAll('.slider .images > img')
-console.log(slidesImages);
-
 const thumbsElement = document.querySelector('.thumbnails')
 
+//Ciclo per creare in pagina le immagini piccole
 photo.forEach((element,key) => {
     const thumbPath = element.image;
     const thumbMarkup = `<img class="thumb ${activeSlide === key ? 'active' : ''}" src="${thumbPath}" alt="">`
@@ -51,65 +52,45 @@ photo.forEach((element,key) => {
     thumbsElement.insertAdjacentHTML('beforeend', thumbMarkup)
 })
 
-//Creo funzione al click del next 
-nextEl.addEventListener('click', function(){
-  
-    // Immagine
+function removeActive(){
+    //Ricavo currentSlide e currentThumb
     const currentSlide = slidesImages[activeSlide]
-    console.log(currentSlide);
+    const currentThumb = document.querySelector('.thumbnails > img.active')
+
     // remove the active class from the current slide
     currentSlide.classList.remove('active')
-  
-    // select the active thumb
-    const currentThumb = document.querySelector('.thumbnails > img.active')
-    console.log(currentThumb);
     // remove the active class from the active thumb
     currentThumb.classList.remove('active')
-  
-    
-    // activeSlide = 4
+}
+
+function activateNextSlideAndThunmb(){
+    // select the next slide
+    const nextSlide = slidesImages[activeSlide]
+    // add the active class to the next slide
+    nextSlide.classList.add('active')
+
+    // select the next thumb
+    const nextThumb = document.querySelectorAll('.thumb')[activeSlide]
+    // add to the next thumb the active class
+    nextThumb.classList.add('active')
+}
+
+//Creo funzione al click del next 
+nextEl.addEventListener('click', function(){
+    removeActive()
   
     if (activeSlide === slidesImages.length - 1) {
       activeSlide = 0
-      // activeSlide = 5
     } else {
-      // increment the activeSlide of 1
       activeSlide++
     }
-  
-  
-    // select the next slide
-    const nextSlide = slidesImages[activeSlide]
-    console.log(nextSlide);
-    // add the active class to the next slide
-    nextSlide.classList.add('active')
-  
-  
-    /* TODO */
-  
-  
-    // select the next thumb
-    const nextThumb = document.querySelectorAll('.thumb')[activeSlide]
-    console.log(nextThumb);
-    // add to the next thumb the active class
-    nextThumb.classList.add('active')
-  
-  
+
+    activateNextSlideAndThunmb()  
   })
 
-  prevEl.addEventListener('click', function () {
+prevEl.addEventListener('click', function () {
   
-    // select the current slide
-    const currentSlide = slidesImages[activeSlide]
-    console.log(currentSlide);
-    // remove the active class from the current slide
-    currentSlide.classList.remove('active')
-    
-    // select the active thumb
-    const currentThumb = document.querySelector('.thumbnails > img.active')
-    console.log(currentThumb);
-    // remove the active class from the active thumb
-    currentThumb.classList.remove('active')
+    removeActive()
   
     if (activeSlide === 0) {
       activeSlide = slidesImages.length - 1
@@ -117,22 +98,8 @@ nextEl.addEventListener('click', function(){
         activeSlide--
     }
     
-    
-    console.log(activeSlide);
-  
-  
-    // select the next slide
-    const nextSlide = slidesImages[activeSlide]
-    console.log(nextSlide);
-    // add the active class to the next slide
-    nextSlide.classList.add('active')
-
-    // select the next thumb
-    const nextThumb = document.querySelectorAll('.thumb')[activeSlide]
-    console.log(nextThumb);
-    // add to the next thumb the active class
-    nextThumb.classList.add('active')
-  })
+    activateNextSlideAndThunmb();
+})
 
 
 
